@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Redirect, Route } from 'react-router-dom';
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonRouterOutlet, IonContent, IonNote, IonButton } from '@ionic/react';
-import { IonReactRouter } from '@ionic/react-router';
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonNote, IonButton } from '@ionic/react';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -19,40 +17,39 @@ import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
-function App() {
-  const [time, setTime] = useState(0)
-  const [lapTime, setLapTime] = useState(0);
-  const [timerOn, setTimeOn] = useState(false);
-  const [laps, setLaps] = useState([]);
+const App = () => {
+  const [time, setTime] = useState(0);
+  const [timerOn, setTimerOn] = useState(false);
+  const [laps, setLaps] = useState([])
 
   useEffect(() => {
-    let interval = null;
+    let time = null;
     if (timerOn) {
-      interval = setInterval(() => {
-        setTime(prevTime => prevTime + 10)
+      time = setInterval(() => {
+        setTime(prevState => prevState + 10)
       }, 10)
     } else {
-      clearInterval(interval)
+      clearInterval(time)
     }
-    return () => clearInterval(interval);
+    return () => clearInterval(time)
   }, [timerOn])
 
-  useEffect(() => {
+  const onClickingLap = () => {
+    if (laps === []) {
+      const lapTime = time
+      setLaps([lapTime])
+    } else {
+      const lapTime = time - laps[laps.length - 1]
+      setLaps([...laps, lapTime])
+    }
+    console.log(laps)
+  }
 
-  })
-
-  useEffect(() => {
-    setLaps(prevLaps => prevLaps.concat(lapTime))
-  }, [])
-
-  // const renderLaps = laps.map((lap) => {
-  //   return (
-  //     <IonNote>{lap}</IonNote>
-  //   )
-  // })
-
-
-
+  const onClickingReset = () => {
+    setTime(0);
+    setLaps([]);
+    setTimerOn(false);
+  }
 
 
   return (
@@ -65,14 +62,15 @@ function App() {
 
       <IonContent>
         <IonNote>{time}</IonNote>
-        <IonButton onClick={() => setTimeOn(true)}>Start</IonButton>
-        <IonButton>Stop</IonButton>
-        <IonButton>Reset</IonButton>
-        <IonButton>Lap</IonButton>
+        <IonButton onClick={() => setTimerOn(true)}>Start</IonButton>
+        <IonButton onClick={() => setTimerOn(false)}>Stop</IonButton>
+        <IonButton onClick={onClickingReset}>Reset</IonButton>
+        <IonButton onClick={onClickingLap}>Lap</IonButton>
         <IonNote>{laps}</IonNote>
       </IonContent>
     </IonPage>
   )
 }
+
 
 export default App;
