@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonNote, IonButton } from '@ionic/react';
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonText } from '@ionic/react';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -22,6 +22,10 @@ const App = () => {
   const [timerOn, setTimerOn] = useState(false);
   const [laps, setLaps] = useState([])
 
+  const timerMinutes = ("0" + Math.floor((time / 60000) % 60)).slice(-2)
+  const timerSeconds = ("0" + Math.floor((time / 1000) % 60)).slice(-2)
+  const timerMilliseconds = ("0" + ((time / 10) % 100)).slice(-2)
+
   useEffect(() => {
     let time = null;
     if (timerOn) {
@@ -35,14 +39,8 @@ const App = () => {
   }, [timerOn])
 
   const onClickingLap = () => {
-    if (laps === []) {
-      const lapTime = time
-      setLaps([lapTime])
-    } else {
-      const lapTime = time - laps[laps.length - 1]
-      setLaps([...laps, lapTime])
-    }
-    console.log(laps)
+    let lapTime = time - laps.reduce((a, b) => a + b, 0)
+    setLaps(laps => [...laps, lapTime])
   }
 
   const onClickingReset = () => {
@@ -50,6 +48,15 @@ const App = () => {
     setLaps([]);
     setTimerOn(false);
   }
+
+  const renderLaps = laps.map((lap, index) => {
+    const lapMinutes = ("0" + Math.floor((lap / 60000) % 60)).slice(-2)
+    const lapSeconds = ("0" + Math.floor((lap / 1000) % 60)).slice(-2)
+    const lapMilliseconds = ("0" + ((lap / 10) % 100)).slice(-2)
+    return (
+      <h4 key={index}>Lap {index + 1}: {lapMinutes}:{lapSeconds}:{lapMilliseconds}</h4>
+    )
+  })
 
 
   return (
@@ -59,14 +66,15 @@ const App = () => {
           <IonTitle>Lap Timer</IonTitle>
         </IonToolbar>
       </IonHeader>
-
       <IonContent>
-        <IonNote>{time}</IonNote>
+        <IonText>
+          <h4>{timerMinutes}:{timerSeconds}:{timerMilliseconds}</h4>
+        </IonText>
         <IonButton onClick={() => setTimerOn(true)}>Start</IonButton>
         <IonButton onClick={() => setTimerOn(false)}>Stop</IonButton>
         <IonButton onClick={onClickingReset}>Reset</IonButton>
         <IonButton onClick={onClickingLap}>Lap</IonButton>
-        <IonNote>{laps}</IonNote>
+        <IonText>{renderLaps}</IonText>
       </IonContent>
     </IonPage>
   )
