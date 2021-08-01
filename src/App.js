@@ -58,7 +58,6 @@ const App = () => {
     )
   })
 
-
   return (
     <IonPage>
       <IonHeader>
@@ -79,6 +78,5 @@ const App = () => {
     </IonPage>
   )
 }
-
 
 export default App;
