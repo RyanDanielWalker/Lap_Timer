@@ -57,7 +57,7 @@ const App = () => {
 
   const onClickingLap = () => {
     let lapTime = time - laps.reduce((a, b) => a + b, 0)
-    setLaps(laps => [...laps, lapTime])
+    setLaps(prevLaps => [...prevLaps, lapTime])
   }
 
   const onClickingReset = () => {
@@ -90,17 +90,20 @@ const App = () => {
                   <IonText>
                     <h1>{timerMinutes}:{timerSeconds}:{timerMilliseconds}</h1>
                   </IonText>
-                  <IonButton fill="outline" onClick={() => setTimerOn(true)}><IonText color="">Start</IonText></IonButton>
-                  <IonButton fill="outline" onClick={() => setTimerOn(false)}>Stop</IonButton>
-                  <IonButton fill="outline" onClick={onClickingReset}>Reset</IonButton>
-                  <IonButton fill="outline" onClick={onClickingLap}>Lap</IonButton>
+                  {!timerOn &&
+                    <IonButton fill="outline" onClick={() => setTimerOn(true)}><IonText color="">Start</IonText></IonButton>}
+                  {timerOn &&
+                    <IonButton fill="outline" onClick={() => setTimerOn(false)}>Stop</IonButton>}
+                  {timerOn &&
+                    <IonButton fill="outline" onClick={onClickingLap}>Lap</IonButton>}
+                  {!timerOn &&
+                    <IonButton fill="outline" onClick={onClickingReset}>Reset</IonButton>}
                   <IonText>{renderLaps}</IonText>
                 </IonCardContent>
               </IonCard>
             </IonCol>
             <IonCol></IonCol>
           </IonRow>
-
         </IonGrid>
       </IonContent>
     </IonPage>
