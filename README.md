@@ -25,8 +25,8 @@ This application will allow the user to measure time intervals down to 1/100th o
 3. Open with your preferred text editor to view the code base
 4. To install dependencies, run the command `npm install`
 4. To run the app:
-    * Run the command `npm start` to run the project!
-    * View the application via your preferred web browser by visiting `localhost:3000/`
+    * Run the command `ionic serve` to run the project!
+    * View the application via your preferred web browser by visiting `localhost:8100/`
 
 ## Known Bugs
 There were no bugs detected.
