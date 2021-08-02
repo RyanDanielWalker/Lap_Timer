@@ -1,5 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonText } from '@ionic/react';
+import {
+  IonPage,
+  IonContent,
+  IonButton,
+  IonText,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardContent,
+  IonGrid,
+  IonRow,
+  IonCol
+} from '@ionic/react';
+import './App.css';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -17,7 +30,11 @@ import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
+/* Theme variables */
+import './theme/variables.css';
+
 const App = () => {
+
   const [time, setTime] = useState(0);
   const [timerOn, setTimerOn] = useState(false);
   const [laps, setLaps] = useState([])
@@ -60,20 +77,31 @@ const App = () => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Lap Timer</IonTitle>
-        </IonToolbar>
-      </IonHeader>
       <IonContent>
-        <IonText>
-          <h4>{timerMinutes}:{timerSeconds}:{timerMilliseconds}</h4>
-        </IonText>
-        <IonButton onClick={() => setTimerOn(true)}>Start</IonButton>
-        <IonButton onClick={() => setTimerOn(false)}>Stop</IonButton>
-        <IonButton onClick={onClickingReset}>Reset</IonButton>
-        <IonButton onClick={onClickingLap}>Lap</IonButton>
-        <IonText>{renderLaps}</IonText>
+        <IonGrid>
+          <IonRow style={{ marginTop: '15vh' }} class="ion-justify-content-center">
+            <IonCol></IonCol>
+            <IonCol size='6'>
+              <IonCard style={{ textAlign: 'center' }}>
+                <IonCardHeader>
+                  <IonCardTitle>Lap Timer</IonCardTitle>
+                </IonCardHeader>
+                <IonCardContent>
+                  <IonText>
+                    <h1>{timerMinutes}:{timerSeconds}:{timerMilliseconds}</h1>
+                  </IonText>
+                  <IonButton fill="outline" onClick={() => setTimerOn(true)}><IonText color="">Start</IonText></IonButton>
+                  <IonButton fill="outline" onClick={() => setTimerOn(false)}>Stop</IonButton>
+                  <IonButton fill="outline" onClick={onClickingReset}>Reset</IonButton>
+                  <IonButton fill="outline" onClick={onClickingLap}>Lap</IonButton>
+                  <IonText>{renderLaps}</IonText>
+                </IonCardContent>
+              </IonCard>
+            </IonCol>
+            <IonCol></IonCol>
+          </IonRow>
+
+        </IonGrid>
       </IonContent>
     </IonPage>
   )
